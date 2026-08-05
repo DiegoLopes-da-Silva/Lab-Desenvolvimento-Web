@@ -1,0 +1,68 @@
+Estudo Node.Js
+- É open source e multiplataforma.
+- Tem um desempenho muito bom.
+- Possui uma biblioteca padrão.
+- Usa o NPM como gerenciador de pacotes.
+- É uma linguagem MODULAR
+
+Principalmente, o Node Js permite utilizar o javascript profundamente em coisas relacionadas ao Backend de forma que ele nativamente não faz.
+Ele permite acessar o banco de dados, ler rede e acessar o sistema de arquivos - de maneira otimizada, retomando as operações quando a resposta é recebida ao invez d desperdiçar ciclus com a CPU ociosa.
+Por esse mesmo motivo, ele tem uma ocorrência significantemente menor de bugs.
+
+O Node Js também permite escrever códigos do lado do cliente ou do servidor sem necessidade de aprender uma linguagem inédita, por utilizar o javascript como base.
+- Tem integração com os novos padrões da ECMAScript, possuindo acesso a recursos experimentais de acordo com as versões do Node.
+
+====--- Exemplo de "Hello World" em node.js ---====
+
+
+== EM CJS
+const { createServer } = require('node:http');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+
+== EM ESM
+import { createServer } from 'node:http';
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+====--- EXECUTANDO CÓDIGOS ---====
+Para executar este trecho de código, salve-o como um server.jsarquivo e execute-o node server.jsno seu terminal. 
+Se você usar a versão mjs do código, salve-o como um server.mjsarquivo e execute-o node server.mjsno seu terminal.
+Este código de exemplo inclui primeiro o httpmódulo Node.js.
+
+====--- EXPLICANDO O CÓDIGO ---====
+createServer() -> método http que cria um novo servidor HTTP e retorna.
+O servidor está configurado para escutar na porta e no nome do host especificados. 
+Quando o servidor estiver pronto, a função de retorno de chamada é invocada, neste caso, informando que o servidor está em execução.
+
+Sempre que uma nova solicitação é recebida, o requestevento é acionado, fornecendo dois objetos: uma solicitação (um http.IncomingMessageobjeto) e uma resposta (um http.ServerResponseobjeto).
+A solicitação fornece detalhes - e a resposta retorna dados pra quem fez a chamada
+
+res.Status Code = 200; -> Definimos a statusCodepropriedade como 200, para indicar uma resposta bem-sucedida (por padrão do HTTP, 200 = OK)
+
+res.setHeader('Content-Type', 'text/plain'); -> Define o tipo do conteudo para texto com base no formato http
+
+  res.end('Hello World'); -> Finaliza a interação e a resposta.
