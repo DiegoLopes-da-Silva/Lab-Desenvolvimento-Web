@@ -1,0 +1,9 @@
+npm init "inicializador"<- Utilizado para dar inicio a um novo package.json ou um já existente no projeto
+npm init -y <- Cria um package.json básico.
+
+npm install express mongoose cors dotenv <- da primeira vez que for instalar o npm
+
+Como a pasta node modules é carregada com um bocado de coisa desnecessária, então a gente instala os pacotes especificos da primeira vez e futuramente:
+npm install
+
+npm run "nome da tarefa"<- executa um comando do package.json
