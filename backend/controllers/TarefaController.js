@@ -22,5 +22,17 @@ export default class TarefaController{
         } catch (error){
             return res.status(500).json({message:"Problema ao inserir uma tarefa", error});
         }
-    }
+    } //Fim do create
+
+    static async getAll(req, res) {
+        try {
+            const tarefas = await Tarefa.find();
+            return res.status(200).json({message:"Buscar tarefas foi um sucesso", tarefas});
+        }
+
+        catch(error) {
+            return res.status(500).json({message:"Erro ao buscar tarefas", error});
+        }
+
+    } //Fim getAll
 }

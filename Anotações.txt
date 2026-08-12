@@ -7,3 +7,17 @@ Como a pasta node modules é carregada com um bocado de coisa desnecessária, en
 npm install
 
 npm run "nome da tarefa"<- executa um comando do package.json
+
+Alguns verbos Http
+get
+post
+delete
+put -> Alterar tudo
+patch -> Alterar prate
+
+Instalar pacotes para testar o back sem necessidade do front:
+swagger-ui-express (normal)
+swagger-autogen (dev) -> ou seja, na hora de instalar dar o npm install -D
+
+executando o swagger:
+npm run swagger

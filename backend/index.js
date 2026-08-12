@@ -1,8 +1,11 @@
 import express from "express";
 import cors from  "cors";
+import routes from "./routes/routes.js";
+import swaggerUi from "swagger-ui-express";
+//suporte para importar arquivos json usando ESModules
 
-//incluir as notas
-
+const require = createRequire(import.meta.url);
+const swaggerDocument = require("./swagger-output.json");
 const app = new express();
 const port = 3000;
 
@@ -13,6 +16,11 @@ app.use(cors({
     origin: `http://localhost:${port}`,
 }));
 
+//obrigatoriamente o swagger deve vir antes da rotas
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //ligar o express com as rotas
+app.use("/ToDo", routes);
+//Forma o Url completo que deve ser algo semelhante a: http://localhost:5000/ToDo/Create
+//ToDo é a Url base desse projeto, definida no app.use
 
 app.listen(5000);
