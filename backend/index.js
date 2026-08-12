@@ -2,6 +2,7 @@ import express from "express";
 import cors from  "cors";
 import routes from "./routes/routes.js";
 import swaggerUi from "swagger-ui-express";
+import { createRequire} from "module";
 //suporte para importar arquivos json usando ESModules
 
 const require = createRequire(import.meta.url);
