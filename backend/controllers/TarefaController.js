@@ -1,4 +1,4 @@
-import Tarefa from '../models/Tarefa';
+import Tarefa from '../models/Tarefa.js';
 import { Types } from 'mongoose';
 
 export default class TarefaController{
@@ -19,9 +19,25 @@ export default class TarefaController{
             const novaTarefa = await tarefa.save();
             res.status(200).json({message:"Tarefa inserida com sucesso", novaTarefa});
             return;
-        } catch (error){
-            return res.status(500).json({message:"Problema ao inserir uma tarefa", error});
+        } 
+        
+        catch (error) {
+            console.error("ERRO COMPLETO:", error);
+        
+            return res.status(500).json({
+                message: "Problema ao inserir uma tarefa",
+                error: {
+                    message: error.message,
+                    code: error.code,
+                    errno: error.errno,
+                    sqlState: error.sqlState,
+                    sqlMessage: error.sqlMessage
+                }
+            });
         }
+        /*catch (error){
+            return res.status(500).json({message:"Problema ao inserir uma tarefa", error});
+        }*/
     } //Fim do create
 
     static async getAll(req, res) {

@@ -1,5 +1,5 @@
-import mongoose from "../db/Conn";
-const { Banco } = mongoose;
+import mongoose from "../db/Conn.js";
+const { Schema } = mongoose;
 const tarefaSchema = new Schema(
     {
         titulo: {
@@ -11,7 +11,7 @@ const tarefaSchema = new Schema(
             required: true,
         },
         dataLimite: {
-            type: Date,
+            type: Date,   
             required: true,
         },
         situacao: {

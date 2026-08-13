@@ -9,5 +9,7 @@ async function main() {
     }
 }
 
-// exorta o que foi feito no main, palavra reservada do mongoose
+main();
+
+// exporta o que foi feito no main, palavra reservada do mongoose
 export default mongoose;

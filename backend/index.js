@@ -8,13 +8,12 @@ import { createRequire} from "module";
 const require = createRequire(import.meta.url);
 const swaggerDocument = require("./swagger-output.json");
 const app = new express();
-const port = 3000;
 
 //comunicação entre front e back usar json
-app.use(express.json);
+app.use(express.json());
 app.use(cors({
     credentials: true,
-    origin: `http://localhost:${port}`,
+    origin: `http://localhost:3000`,
 }));
 
 //obrigatoriamente o swagger deve vir antes da rotas
@@ -24,4 +23,6 @@ app.use("/ToDo", routes);
 //Forma o Url completo que deve ser algo semelhante a: http://localhost:5000/ToDo/Create
 //ToDo é a Url base desse projeto, definida no app.use
 
-app.listen(5000);
+app.listen(5000, () => {
+    console.log(`Rodando vambora`)
+})
