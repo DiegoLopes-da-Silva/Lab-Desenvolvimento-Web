@@ -21,3 +21,8 @@ swagger-autogen (dev) -> ou seja, na hora de instalar dar o npm install -D
 
 executando o swagger:
 npm run swagger
+
+---- GERAR FRONTEND (Pasta ToDo)
+npm create vite@latest frontend
+
+npm install tailwindcss@tailwindcss.vite
