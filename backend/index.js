@@ -13,7 +13,7 @@ const app = new express();
 app.use(express.json());
 app.use(cors({
     credentials: true,
-    origin: `http://localhost:3000`,
+    origin: `http://localhost:5173`,
 }));
 
 //obrigatoriamente o swagger deve vir antes da rotas
@@ -24,5 +24,5 @@ app.use("/ToDo", routes);
 //ToDo é a Url base desse projeto, definida no app.use
 
 app.listen(5000, () => {
-    console.log(`Rodando vambora`)
+    console.log(`Rodando`)
 })
