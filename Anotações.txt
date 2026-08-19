@@ -26,3 +26,7 @@ npm run swagger
 npm create vite@latest frontend
 
 npm install tailwindcss@tailwindcss.vite
+
+---- React insano ai
+
+npm install react-router-dom axios
