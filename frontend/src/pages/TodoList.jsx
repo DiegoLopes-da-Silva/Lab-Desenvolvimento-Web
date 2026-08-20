@@ -1,4 +1,29 @@
+import React, {useState , useEffect} from "react";
+import { getToDos } from "../api/ToDo";
+import TodoItem from "../components/TodoItem";
+import { Link } from "react-router-dom";
+
 export default function TodoList() {
+    const[todos, setToDos] = useState([]);
+    const[loading, setLoading] = useState(true);
+    const[error, setError] = useState("");
+
+    const fetch = async ()=> {
+        try {
+            setLoading(true);
+            const res = await getToDos;
+            setToDos(res.data.Tarefa);
+        }
+        catch (error) {
+            setError(error);
+                }
+        finally {
+            setLoading(false);
+        }
+    }
+    //fim da função Fetch
+    useEffect(()=>{fetch()}, []);
+
     return(
         <div>
             <div className="flex items-center justify-between mb-4">
