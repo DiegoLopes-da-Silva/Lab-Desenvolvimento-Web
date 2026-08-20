@@ -7,7 +7,7 @@ export default function TodoForm() {
     const[descricao, setDescricao] = useState('');
     const[dataLimite, setDataLimite] = useState('');
     const[situacao, setSituacao] = useState('Pendente');
-    const[saving, setSaving] = useState('False');
+    const[saving, setSaving] = useState(false);
     const navigate = useNavigate();
     const handleSubmit = async (e)=>{
         e.preventDefault();
