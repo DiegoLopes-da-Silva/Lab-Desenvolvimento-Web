@@ -21,6 +21,7 @@ swagger-autogen (dev) -> ou seja, na hora de instalar dar o npm install -D
 
 executando o swagger:
 npm run swagger
+node swagger
 
 ---- GERAR FRONTEND (Pasta ToDo)
 npm create vite@latest frontend
@@ -30,3 +31,12 @@ npm install tailwindcss@tailwindcss.vite
 ---- React insano ai
 
 npm install react-router-dom axios
+
+---- Instalar no backend
+npm install argon2 cookie-parser crypto jsonwebtoken dotenv nodemailer
+Argon2 -> Criptografa senha
+cookie-parser -> Guarda token cookies
+Crypto -> criptografa dados enviado, link esqueceu a senha)
+jsonwebtoken -> geração de tokens
+dotenv -> trabalha .env
+nodemailer -> envio de email
