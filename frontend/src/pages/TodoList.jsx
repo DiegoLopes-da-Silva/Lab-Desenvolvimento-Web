@@ -11,12 +11,13 @@ export default function TodoList() {
     const fetch = async ()=> {
         try {
             setLoading(true);
-            const res = await getToDos;
-            setToDos(res.data.Tarefa);
+            const res = await getToDos();
+            setToDos(res.data.tarefas);
         }
         catch (error) {
-            setError(error);
-                }
+            console.error("ERRO AO BUSCAR TAREFAS:", error);
+            setError(error.message);
+        }
         finally {
             setLoading(false);
         }
