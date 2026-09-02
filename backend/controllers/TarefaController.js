@@ -51,4 +51,31 @@ export default class TarefaController{
         }
 
     } //Fim getAll
+
+    
+static async Delete(req, res){
+    const {id} = req.params;
+    if (!id ){
+        return res.status(422).json({ message: "Erro no id enviado" });
+    }
+    try{
+      const deleted_tarefa = await Tarefa.Delete(id);
+
+      if (!deleted_tarefa) {
+        return res.status(404).json({
+          message: "Tarefa não encontrada",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Tarefa deletada com sucesso!",
+        deleted_tarefa,
+      });
+
+    } catch( error ){
+      return res.status(500).json({
+        message: "Erro ao deletar tarefa!",
+      });
+    }
+  }
 }

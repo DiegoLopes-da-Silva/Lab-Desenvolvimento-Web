@@ -42,4 +42,60 @@ export default class UsuarioController{
             return res.status(500).json({message:"Problema ao inserir uma tarefa", error});
         }*/
     } //Fim do create
+
+    static async LoginUsuario(req, res){
+        const { email, senha } = req.body;
+    
+        if (!email || !senha) {
+          return res
+            .status(422)
+            .json({ message: "Todos os campos são obrigatórios." });
+        }
+    
+        try{
+          const usuario = await Usuario.findOne({ email }).select("+senha");
+    
+          if(!usuario){
+            return res.status(404).json({message: "Dados inválidos"});
+          }
+    
+          const senhaValida = await argon2.verify(usuario.senha, senha);
+    
+          if(!senhaValida){
+            return res.status(400).json({message: "Credenciais inválidas"});
+          }
+    
+          const tokenPayLoad = {
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email
+          };
+    
+          const token = jwt.sign(tokenPayLoad, process.env.JWT_SECRET, 
+            {expireIn: "2h"
+            });
+          res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: process.env.JWT_EXPIRATION_MS || 3600000 
+          });
+        
+          return res 
+            .status(200)
+            .json({ message: "Login efetuado com sucesso",  
+              usuario : {
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email
+              },
+              token
+            },
+            )
+        } catch(error){
+            return res
+            .status(500)
+            .json({ message: "Erro ao Fazer login.", error });
+        }
+      }
 }
