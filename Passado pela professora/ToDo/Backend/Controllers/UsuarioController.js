@@ -1,6 +1,6 @@
 import Usuario from "../Models/Usuario.js";
-import {hash, verify} from "@node-rs/argon2";
-//import argon2 from "argon2";
+//import {hash, verify} from "@node-rs/argon2";
+import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { 
@@ -19,8 +19,8 @@ export default class UsuarioController
             return res.status(422).json({message: "Todos os dados são obrigatórios"});
         }
         try {
-            const hashPassword = await hash(senha);
-            //const hashPassword = await argon2.hash(senha);
+            //const hashPassword = await hash(senha);
+            const hashPassword = await argon2.hash(senha);
             const usuario= new Usuario({
                 nome,
                 email,
@@ -50,8 +50,8 @@ export default class UsuarioController
             return res.status(400).json({ message: "Credenciais inválidas" });
         }
 
-        const senhaCorreta = await verify(usuario.senha, senha);
-        //const senhaCorreta = await argon2.verify(usuario.senha, senha);
+        //const senhaCorreta = await verify(usuario.senha, senha);
+        const senhaCorreta = await argon2.verify(usuario.senha, senha);
         if (!senhaCorreta) {
             return res.status(400).json({ message: "Credenciais inválidas" });
         }
@@ -102,16 +102,16 @@ export default class UsuarioController
                 return res.status(200).json({message:"Se o e-mail estiver cadastrado, um link será enviado"});
             }
             const resetToken = crypto.randomBytes(32).toString('hex');
-            const hashToken = await hash(resetToken);
-            //const hashToken = await argon2.hash(resetToken);
+            //const hashToken = await hash(resetToken);
+            const hashToken = await argon2.hash(resetToken);
             const resetTokenExpiry = new Date(Date.now() + RESET_TOKEN_EXPIRATION_HOURS * 60 * 60 * 1000);
             await Usuario.findByIdAndUpdate(usuario.id, {
                 resetToken: hashToken,
                 resetTokenExpiry: resetTokenExpiry
             });
-            sendPasswordResetEmail(usuario.email, resetToken).catch(err=>{
+            /*sendPasswordResetEmail(usuario.email, resetToken).catch(err=>{
                 console.error("Falha no envio do e-mail");
-            });
+            });*/
             return res.status(200).json({ message: "Se o e-mail estiver cadastrado, um link será enviado1", resetToken });
         } 
         catch (error)
@@ -168,8 +168,8 @@ export default class UsuarioController
             }
 
             // Hash da nova senha
-            //const hashNovaSenha = await argon2.hash(novaSenha);
-            const hashNovaSenha = await hash(novaSenha);
+            const hashNovaSenha = await argon2.hash(novaSenha);
+            //const hashNovaSenha = await hash(novaSenha);
 
             // Atualiza a senha e limpa o token de recuperação
             usuarioValido.senha = hashNovaSenha;
@@ -219,15 +219,15 @@ export default class UsuarioController
     static async getAllExceptLogged(req, res) {
         try {
             const usuarioLogado = req.user.id;
+            console.log("Usuário Logado " + usuarioLogado);
             const usuarios = await Usuario.find({_id:{$ne:usuarioLogado}})
-            .select ("nome")
+            .select("nome")
             .sort({nome:1});
-            return res.status(200)
+            console.log(usuarios);
+            return res.status(200).json({usuarios});
         }
-        catch(error) {
-            return res.status(500)
-            .json({ message: "Erro ao fazer login.", error});
-
+        catch(error){
+            return res.status(500).json({message:"Problema ao buscar usuários", error})
         }
     }
 };

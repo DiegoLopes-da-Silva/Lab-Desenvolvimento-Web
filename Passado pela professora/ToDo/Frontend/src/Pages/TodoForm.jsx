@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTodo } from "../api/Todo.jsx";
 import { getUsers } from "../api/Todo.jsx"; // ou seu arquivo de API
+import { useVoiceRecognition } from "../Hooks/useVoiceRecognition.js";
 
 export default function TodoForm() {
   const [titulo, setTitulo] = useState("");
@@ -13,6 +14,27 @@ export default function TodoForm() {
   const [loadingUsuarios, setLoadingUsuarios] = useState(true);
 
   const [saving, setSaving] = useState(false);
+  const {
+            textoOuvido,
+            setTextoOuvido,
+            ouvindo,
+            iniciarEscuta,
+            pararEscuta,
+            processarComandoVoz,
+            suportado
+  } = useVoiceRecognition
+  //processa a fala passando a lista de usuário e a função para checkbox
+  useEffect(()=> {(
+            textoOuvido,
+            setTextoOuvido,
+            setTitulo,
+            setDescricao,
+            setDataLimite,
+            usuarios,
+            handleCheckboxChange);
+            setTextoOuvido("");
+  }, [textoOuvido, setTextoOuvido, usuarios]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,8 +42,8 @@ export default function TodoForm() {
       try {
         setLoadingUsuarios(true);
         const res = await getUsers();
-        const lista = res?.data?.usuarios || [];
-        
+        const lista = res.data.usuarios || []
+        console.log(lista);
         // Garante que só seta se for realmente um Array
         setUsuarios(Array.isArray(lista) ? lista : []);
       } catch (error) {
@@ -109,8 +131,8 @@ export default function TodoForm() {
                       className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                     />
                     <span className="text-sm text-gray-700">
-                      {user.nome}{" "}
-                      <span className="text-xs text-gray-400">({user.email})</span>
+                      {user.nome}
+                      
                     </span>
                   </label>
                 ))

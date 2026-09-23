@@ -14,15 +14,16 @@ export default class TarefaController{
                 descricao,
                 dataLimite,
                 situacao,
-                criadoPor:usuarioLogado,
-                participam: Array.isArray(participam)?
+                criadoPor: usuarioLogado,
+                participam: Array.isArray(participam)? 
                 participam : (participam ? [participam] : [])
 
             });
             const novaTarefa = await tarefa.save();
-            const tarefaPopulada = await Tarefa.findById(novaTarefa._Id)
-            .populate("criadoPor", "nome email")
-            .populate("participam", "nome email");
+            const tarefaPopulada = await Tarefa.findById(
+                novaTarefa._Id)
+                .populate("criadoPor", "nome email")
+                .populate("participam", "nome email");
             res.status(200).json({message:"Tarefa inserida com sucesso", novaTarefa:tarefaPopulada});
             return;
         } catch (error) {
@@ -30,8 +31,18 @@ export default class TarefaController{
         }
     }//fim create
     static async getAll(req, res){
+        const usuarioLogado = req.user.id;
         try {
-            const tarefas = await Tarefa.find();
+            const tarefas = await Tarefa.find({
+                    $or:[
+                        {criadoPor:usuarioLogado},
+                        {participam: usuarioLogado}
+                    ]
+                })
+                .populate("criadoPor", "nome")
+                .populate("participam", "nome")
+                .sort({ createdAt: -1 });
+            
             return res.status(200).json({message:"Buscar tarefas com sucesso", tarefas});
         } catch (error) {
             return res.status(500).json({message:"Erro ao buscar todas tarefas", error});

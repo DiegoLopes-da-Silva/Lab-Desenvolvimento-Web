@@ -1,3 +1,42 @@
+import React, {useState, useEffect, useRef} from "react";
+import {io} from "socket.io-client";
+import {getChatTodoHistory} from "../api/Todo.jsx";
+//conecta a URL do backend
+const SOCKET_URL = "http://localhost:5000";
+export default function TodoChatModal(tarefa, usuarioLogado, onClose) {
+  const [mensagens, setMensagens] = UseState([]);
+   const [novoTexto, setNovotexto] = UseState([]);
+    const [loading, setLoading] = UseState([]);
+    const socketRef = useRef(null);
+    const messagesEndRef = useRef(null);
+    //controle do autoscroll
+    const scrollToBotom = ()=>{
+      messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
+    };
+
+    useEffect = ()=> {
+      //carregar o histórico das mensagens trocadas anteriormente (backend)
+      async function carregarHistorico(){
+        try {
+          setLoading(true);
+          const res = await getChatTodoHistory(tarefa_id);
+          setMensagens(res.data.mensagens || []);
+        }
+        catch (error) {
+          console.log("Erro ao carregar o histórico de mensagens", error)
+        }
+        finally {
+          setLoading(false);
+        }
+      }
+    };
+    carregarHistorico();
+    //inicializar o socket
+    socketRef.current = (SOCKET_URL, {withCredential:true});
+     //entrar no chat
+     socketRef.current.emit("join task", tarefa_id);
+     //ouvir as tarefas em tempo real
+     //Daqui pra frente eu não fiz ainda <- tava com uma dor de cabeça lascadinha de tanto forçar a vista pra copiar
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
@@ -78,3 +117,4 @@
       </div>
     </div>
   );
+  }
